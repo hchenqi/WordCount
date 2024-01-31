@@ -13,6 +13,7 @@ export default function ({ getListRef }) {
   function commit() {
     getListRef().addWords(separate_words(ref_input.current.innerText));
     ref_input.current.innerHTML = '';
+    ref_input.current.dispatchEvent(new Event('input', { bubbles: true }));
   }
 
   return (

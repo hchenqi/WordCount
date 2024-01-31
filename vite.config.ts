@@ -12,8 +12,8 @@ export default defineConfig({
         'short_name': 'Word Count',
         'start_url': '.',
         'display': 'standalone',
-        'theme_color': '#ffdfbf',
-        'background_color': '#ffdfbf',
+        'theme_color': '#0055aa',
+        'background_color': '#0055aa',
         'icons': [
           {
             'sizes': '192x192',

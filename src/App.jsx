@@ -9,6 +9,7 @@ export default function () {
     <div style={{
       maxWidth: '750px',
       margin: '0px auto',
+      padding: '5px'
     }}>
       <Input getListRef={getListRef}></Input>
       <List setListRef={setListRef}></List>

@@ -1,5 +1,14 @@
+.input-label {
+  margin: 5px 0px;
+}
+
 .input-field {
   border: 1px solid black;
   outline: none;
+  padding: 5px;
+}
+
+.input-button {
+  margin: 5px 0px;
   padding: 5px;
 }

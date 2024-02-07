@@ -43,13 +43,12 @@ export default function ({ getListRef }) {
 
   return (
     <div>
-      <div>Link Input:</div>
+      <div className='input-label'>Link Input:</div>
       <div className='input-field' style={{ borderColor: linkError ? 'red' : 'black' }} ref={ref_link_input} contentEditable onInput={checkLink} onKeyDown={onKeyDown}></div>
-      <button ref={ref_fetch_button} onClick={fetchLink}>Fetch Content</button>
-      <div>Text Input:</div>
+      <button className='input-button' ref={ref_fetch_button} onClick={fetchLink}>fetch content</button>
+      <div className='input-label'>Text Input:</div>
       <div className='input-field' style={{ maxHeight: '500px', overflowX: 'hidden', overflowY: 'scroll' }} ref={ref_text_input} contentEditable onKeyDown={onKeyDown}></div>
-      <button ref={ref_add_button} onClick={addText}>Add</button>
-      <button onClick={() => getListRef().clear()}>Clear</button>
+      <button className='input-button' ref={ref_add_button} onClick={addText}>add to list</button>
     </div>
   )
 }

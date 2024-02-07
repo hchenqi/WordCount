@@ -1,32 +1,42 @@
 import { useLocalStateJson } from "./utility/localState";
 
-function Item({ word, count }) {
+function Item({ word, count, onAddToDictionary }) {
   return (
     <tr>
-      <td>{word}</td>
+      <td >{word}</td>
       <td>{count}</td>
+      <td>
+        <button onClick={onAddToDictionary}>add to dictionary</button>
+      </td>
     </tr>
   )
 }
 
-export default function ({ setListRef }) {
+export default function ({ getDictRef, setListRef }) {
   const [dict, setDict] = useLocalStateJson('word_count_dict', {});
 
-  function merge(word_list) {
+  function addWords(word_list) {
     let dict_new = Object.assign({}, dict);
     word_list.forEach(word => {
       if (word in dict_new) {
         dict_new[word]++;
       } else {
-        dict_new[word] = 1;
+        if (!getDictRef().hasWord(word)) {
+          dict_new[word] = 1;
+        }
       }
     });
     setDict(dict_new)
   }
 
+  function removeWord(word) {
+    let dict_new = Object.assign({}, dict);
+    delete dict_new[word];
+    setDict(dict_new);
+  }
+
   setListRef({
-    addWords: merge,
-    clear: () => { setDict({}); }
+    addWords,
   });
 
   const list = Object.entries(dict).sort((a, b) => {
@@ -39,25 +49,43 @@ export default function ({ setListRef }) {
   });
 
   return (
-    <table style={{
-      width: '100%',
-      border: 'none',
-      borderSpacing: '0px',
-      textAlign: 'center'
+    <div style={{
+      flex: '1',
     }}>
-      <thead>
-        <tr>
-          <th>Word ({list.length} results)</th>
-          <th>Frequency</th>
-        </tr>
-      </thead>
-      <tbody>
-        {
-          list.map(([word, count]) => (
-            <Item key={word} word={word} count={count}></Item>
-          ))
-        }
-      </tbody>
-    </table >
+      <div>*{list.length} words in list</div>
+      <table style={{
+        display: 'block',
+        border: 'none',
+        borderSpacing: '0px',
+        textAlign: 'left',
+        maxHeight: '500px',
+        overflowX: 'hidden',
+        overflowY: 'scroll',
+      }}>
+        <thead style={{
+          position: 'sticky',
+          top: '0px',
+          width: '100%',
+          backgroundColor: 'white'
+        }}>
+          <tr>
+            <th>Word</th>
+            <th>Frequency</th>
+            <th>Operation</th>
+          </tr>
+        </thead>
+        <tbody>
+          {
+            list.map(([word, count]) => (
+              <Item key={word} word={word} count={count} onAddToDictionary={() => {
+                getDictRef().addWord(word);
+                removeWord(word);
+              }}></Item>
+            ))
+          }
+        </tbody>
+      </table >
+      <button onClick={() => setDict({})}>clear list</button>
+    </div>
   )
 }

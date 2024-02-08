@@ -1,12 +1,13 @@
 import { useLocalStateJson } from "./utility/localState";
 
-function Item({ word, count, onAddToDictionary }) {
+function Item({ word, count, onAdd, onDelete }) {
   return (
     <tr>
       <td >{word}</td>
       <td>{count}</td>
       <td>
-        <button onClick={onAddToDictionary}>add to dictionary</button>
+        <button onClick={onAdd}>add</button>
+        <button onClick={onDelete}>delete</button>
       </td>
     </tr>
   )
@@ -77,10 +78,18 @@ export default function ({ getDictRef, setListRef }) {
         <tbody>
           {
             list.map(([word, count]) => (
-              <Item key={word} word={word} count={count} onAddToDictionary={() => {
-                getDictRef().addWord(word);
-                removeWord(word);
-              }}></Item>
+              <Item
+                key={word}
+                word={word}
+                count={count}
+                onAdd={() => {
+                  getDictRef().addWord(word);
+                  removeWord(word);
+                }}
+                onDelete={() => {
+                  removeWord(word);
+                }}
+              ></Item>
             ))
           }
         </tbody>

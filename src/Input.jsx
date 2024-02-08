@@ -13,6 +13,7 @@ export default function ({ getListRef }) {
   const ref_text_input = React.useRef();
   const ref_fetch_button = React.useRef();
   const ref_add_button = React.useRef();
+  const ref_info_text = React.useRef();
 
   async function fetchLink() {
     let res = await fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(ref_link_input.current.innerText)}`);
@@ -22,8 +23,10 @@ export default function ({ getListRef }) {
   }
 
   function addText() {
-    getListRef().addWords(separate_words(ref_text_input.current.innerText));
+    let { new_word_count, dict_word_count } = getListRef().addWords(separate_words(ref_text_input.current.innerText));
     ref_text_input.current.innerHTML = '';
+    ref_info_text.current.innerText = `${new_word_count} new word${new_word_count > 1 ? 's' : ''} added to list, ${dict_word_count} word${dict_word_count > 1 ? 's' : ''} found in dictionary`;
+    ref_info_text.current.onclick = () => ref_info_text.current.innerText = '';
   }
 
   function checkLink(event) {
@@ -49,6 +52,7 @@ export default function ({ getListRef }) {
       <div className='input-label'>Text Input:</div>
       <div className='input-field' style={{ maxHeight: '500px', overflowX: 'hidden', overflowY: 'scroll' }} ref={ref_text_input} contentEditable onKeyDown={onKeyDown}></div>
       <button className='input-button' ref={ref_add_button} onClick={addText}>add to list</button>
+      <span ref={ref_info_text} style={{ marginLeft: '5px' }}></span>
     </div>
   )
 }

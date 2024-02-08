@@ -18,16 +18,21 @@ export default function ({ getDictRef, setListRef }) {
 
   function addWords(word_list) {
     let dict_new = Object.assign({}, dict);
+    let new_word_count = 0, dict_word_count = 0;
     word_list.forEach(word => {
       if (word in dict_new) {
         dict_new[word]++;
       } else {
         if (!getDictRef().hasWord(word)) {
           dict_new[word] = 1;
+          new_word_count++;
+        } else {
+          dict_word_count++;
         }
       }
     });
-    setDict(dict_new)
+    setDict(dict_new);
+    return { new_word_count, dict_word_count };
   }
 
   function removeWord(word) {
